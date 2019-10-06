@@ -9,14 +9,16 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
         public bool EnterFileNameAndPressEnter(string fileName) {
             var windowsElementSearchSpec = WindowsElementSearchSpec.Create("window", "");
-            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("dialog", "Open");
+            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("dialog", "");
             windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
+            var windowsGrandChildElementSearchSpec = new WindowsElementSearchSpec { Name = "File name:", LocalizedControlType = "edit" };
+            windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
             AppiumWebElement element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec);
             if (element == null) {
                 return false;
             }
 
-            element = element.FindElementsByWindowsElementSearchSpec(new WindowsElementSearchSpec { Name = "File name:", LocalizedControlType = "edit" }).FirstOrDefault();
+            element = element.FindElementsByWindowsElementSearchSpec(windowsGrandChildElementSearchSpec).FirstOrDefault();
             if (element == null) {
                 return false;
             }
