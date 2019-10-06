@@ -13,14 +13,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             var windowsGrandChildElementSearchSpec = new WindowsElementSearchSpec { Name = "File name:", LocalizedControlType = "edit" };
             var element = FindFileDialog(windowsElementSearchSpec, windowsGrandChildElementSearchSpec, log);
             if (element == null) {
-                windowsElementSearchSpec = WindowsElementSearchSpec.Create("pane", "");
-                windowsElementSearchSpec.NameMustNotBeEmpty = true;
-                windowsElementSearchSpec.NameDoesNotContain = "Desktop";
-                element = FindFileDialog(windowsElementSearchSpec, windowsGrandChildElementSearchSpec, log);
-                log.Insert(0, Properties.Resources.NoPaneWasFound);
-                if (element == null) {
-                    return false;
-                }
+                return false;
             }
 
             element = element.FindElementsByWindowsElementSearchSpec(windowsGrandChildElementSearchSpec).FirstOrDefault();
