@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Aspenlaub.Net.GitHub.CSharp.Paleface;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
@@ -13,7 +14,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
             var windowsGrandChildElementSearchSpec = new WindowsElementSearchSpec { Name = "File name:", LocalizedControlType = "edit" };
             windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
-            AppiumWebElement element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec);
+            var log = new List<string>();
+            AppiumWebElement element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec, log);
             if (element == null) {
                 return false;
             }

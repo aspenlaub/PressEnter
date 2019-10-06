@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PressEnter": {
+      "commandName": "Project",
+      "commandLineArgs": "5 \"C:\\Temp\\Roust.log\" \"C:\\Temp\\PressEnter.log\""
+    }
+  }
+}
