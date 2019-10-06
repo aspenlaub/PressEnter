@@ -8,16 +8,19 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
     public class PressEnterAgent {
         protected WindowsElementSearcher WindowsElementSearcher = new WindowsElementSearcher();
 
-        public bool EnterFileNameAndPressEnter(string fileName) {
+        public bool EnterFileNameAndPressEnter(string fileName, List<string> log) {
             var windowsElementSearchSpec = WindowsElementSearchSpec.Create("window", "");
-            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("dialog", "");
-            windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
             var windowsGrandChildElementSearchSpec = new WindowsElementSearchSpec { Name = "File name:", LocalizedControlType = "edit" };
-            windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
-            var log = new List<string>();
-            AppiumWebElement element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec, log);
+            var element = FindFileDialog(windowsElementSearchSpec, windowsGrandChildElementSearchSpec, log);
             if (element == null) {
-                return false;
+                windowsElementSearchSpec = WindowsElementSearchSpec.Create("pane", "");
+                windowsElementSearchSpec.NameMustNotBeEmpty = true;
+                windowsElementSearchSpec.NameDoesNotContain = "Desktop";
+                element = FindFileDialog(windowsElementSearchSpec, windowsGrandChildElementSearchSpec, log);
+                log.Insert(0, Properties.Resources.NoPaneWasFound);
+                if (element == null) {
+                    return false;
+                }
             }
 
             element = element.FindElementsByWindowsElementSearchSpec(windowsGrandChildElementSearchSpec).FirstOrDefault();
@@ -35,6 +38,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
             element.SendKeys(Keys.Enter);
             return true;
+        }
+
+        private AppiumWebElement FindFileDialog(WindowsElementSearchSpec windowsElementSearchSpec, WindowsElementSearchSpec windowsGrandChildElementSearchSpec,
+                List<string> log) {
+            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("dialog", "");
+            windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
+            windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
+            return WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec, log);
         }
     }
 }

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Press Enter" Height="150" Width="525" Loaded="Window_Loaded" Closed="Window_Closed" Background="LightGray" Icon="pressenter.ico">
+        Title="Press Enter" Height="240" Width="800" Loaded="Window_Loaded" Closed="Window_Closed" Background="LightGray" Icon="pressenter.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

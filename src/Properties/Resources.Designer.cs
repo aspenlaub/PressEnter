@@ -61,20 +61,20 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Button clicked.
-        /// </summary>
-        internal static string ButtonClicked {
-            get {
-                return ResourceManager.GetString("ButtonClicked", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Endless refresh is requested.
         /// </summary>
         internal static string EndlessRefresh {
             get {
                 return ResourceManager.GetString("EndlessRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File name has been entered.
+        /// </summary>
+        internal static string FileNameEntered {
+            get {
+                return ResourceManager.GetString("FileNameEntered", resourceCulture);
             }
         }
         
@@ -111,6 +111,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Properties {
         internal static string LimitedNumberOfRefreshs {
             get {
                 return ResourceManager.GetString("LimitedNumberOfRefreshs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No pane was found with a non-empty name that does not contain &apos;Desktop&apos;.
+        /// </summary>
+        internal static string NoPaneWasFound {
+            get {
+                return ResourceManager.GetString("NoPaneWasFound", resourceCulture);
             }
         }
         

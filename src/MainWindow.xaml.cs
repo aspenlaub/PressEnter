@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,24 +39,30 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             Agent = new PressEnterAgent();
         }
 
-        private void RefreshOnce() {
+        private bool RefreshOnce() {
             Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " ";
 
             if (string.IsNullOrWhiteSpace(FileName)) {
                 SetOverallResultText(Properties.Resources.FileNameIsEmpty);
-                return;
+                return false;
             }
 
             if (!File.Exists(FileName)) {
                 SetOverallResultText(Properties.Resources.FileWithThatNameDoesNotExist);
-                return;
+                return false;
             }
 
-            SetOverallResultText(Agent.EnterFileNameAndPressEnter(FileName) ? Properties.Resources.ButtonClicked : Properties.Resources.NoUploadWindowFound);
+            var log = new List<string>();
+            var okay = Agent.EnterFileNameAndPressEnter(FileName, log);
+            SetOverallResultText(okay ? Properties.Resources.FileNameEntered : Properties.Resources.NoUploadWindowFound);
+            if (!okay) {
+                log.ForEach(s => Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " " + s);
+            }
+            return okay;
         }
 
         private void SetOverallResultText(string s) {
-            if (Response == Properties.Resources.ButtonClicked) { return; }
+            if (Response == Properties.Resources.FileNameEntered) { return; }
 
             Results.Text += s;
             Response = s;
@@ -68,8 +75,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
         private async Task Refresh() {
             do {
-                RefreshOnce();
+                var okay = RefreshOnce();
                 Results.ScrollToEnd();
+                if (okay) {
+                    break;
+                }
 
                 if (NumberOfLoops == 0) {
                     Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " " + string.Format(Properties.Resources.NumberOfRefrehsIsNow, NumberOfLoops);

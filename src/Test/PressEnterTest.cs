@@ -1,10 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Aspenlaub.Net.GitHub.CSharp.Paleface;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Appium;
 
 namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
     [TestClass]
@@ -27,8 +27,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
             var windowsElementSearchSpec = WindowsElementSearchSpec.Create("window", "Document - WordPad");
             var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("document", "Rich Text Window");
             windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
-            AppiumWebElement element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec);
+            var element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec);
             Assert.IsNotNull(element, "Wordpad not found");
+            var log = new List<string>();
             element = element.FindElementsByWindowsElementSearchSpec(windowsChildElementSearchSpec).FirstOrDefault();
             Assert.IsNotNull(element, "Wordpad document not found");
             element.Click();
@@ -37,7 +38,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
             var fileName = new Folder(Path.GetTempPath()).FullName + @"\PressEnter.txt";
             const string testText = "It worked!";
             File.WriteAllText(fileName, testText);
-            Assert.IsTrue(sut.EnterFileNameAndPressEnter(fileName));
+            Assert.IsTrue(sut.EnterFileNameAndPressEnter(fileName, log));
             Assert.IsTrue(element.Text.Contains(testText));
         }
     }
