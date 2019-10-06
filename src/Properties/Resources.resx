@@ -136,7 +136,7 @@
     <value>Number of refresh actions is limited to {0}</value>
   </data>
   <data name="NoUploadWindowFound" xml:space="preserve">
-    <value>No upload window found ({0})</value>
+    <value>No upload window found</value>
   </data>
   <data name="NumberOfArguments" xml:space="preserve">
     <value>Number of command line arguments is {0}</value>

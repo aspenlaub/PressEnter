@@ -115,7 +115,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No upload window found ({0}).
+        ///   Looks up a localized string similar to No upload window found.
         /// </summary>
         internal static string NoUploadWindowFound {
             get {
