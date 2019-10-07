@@ -149,5 +149,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Properties {
                 return ResourceManager.GetString("NumberOfRefrehsIsNow", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshing....
+        /// </summary>
+        internal static string Refreshing {
+            get {
+                return ResourceManager.GetString("Refreshing", resourceCulture);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,15 +33,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
             FileName = Arguments[2];
 
+            Agent = new PressEnterAgent();
+
             if (Arguments.Length <= 3) { return; }
 
             ResponseFileName = Arguments[3];
-
-            Agent = new PressEnterAgent();
         }
 
-        private bool RefreshOnce() {
-            Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " ";
+        private async Task<bool> RefreshOnce() {
+            Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " " + Properties.Resources.Refreshing;
 
             if (string.IsNullOrWhiteSpace(FileName)) {
                 SetOverallResultText(Properties.Resources.FileNameIsEmpty);
@@ -53,10 +54,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             }
 
             var log = new List<string>();
-            var okay = Agent.EnterFileNameAndPressEnter(FileName, log);
+            var okay = await Task.Run(() => Agent.EnterFileNameAndPressEnter(FileName, log));
             SetOverallResultText(okay ? Properties.Resources.FileNameEntered : Properties.Resources.NoUploadWindowFound);
             if (!okay) {
-                log.ForEach(s => Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " " + s);
+                log.Where(s => !string.IsNullOrWhiteSpace(s)).ToList().ForEach(s => Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " " + s);
             }
             return okay;
         }
@@ -75,7 +76,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
         private async Task Refresh() {
             do {
-                var okay = RefreshOnce();
+                var okay = await RefreshOnce();
                 Results.ScrollToEnd();
                 if (okay) {
                     break;

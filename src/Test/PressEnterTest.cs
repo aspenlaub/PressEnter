@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Aspenlaub.Net.GitHub.CSharp.Paleface;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,13 +23,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
 
         [TestMethod]
         public void CanPressEnter() {
-            var windowsElementSearchSpec = WindowsElementSearchSpec.Create("window", "Document - WordPad");
-            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("document", "Rich Text Window");
+            var windowsElementSearchSpec = WindowsElementSearchSpec.Create("", "Document - WordPad");
+            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("", "Rich Text Window");
             windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
             var element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec);
             Assert.IsNotNull(element, "Wordpad not found");
             var log = new List<string>();
-            element = element.FindElementsByWindowsElementSearchSpec(windowsChildElementSearchSpec).FirstOrDefault();
+            element = WindowsElementSearcher.SearchWindowsElement(element, windowsChildElementSearchSpec, log);
             Assert.IsNotNull(element, "Wordpad document not found");
             element.Click();
             element.SendKeys(Keys.Control + 'o' + Keys.Control);

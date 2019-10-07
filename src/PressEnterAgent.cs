@@ -1,22 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Aspenlaub.Net.GitHub.CSharp.Paleface;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Appium;
 
 namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
     public class PressEnterAgent {
         protected WindowsElementSearcher WindowsElementSearcher = new WindowsElementSearcher();
 
         public bool EnterFileNameAndPressEnter(string fileName, List<string> log) {
-            var windowsElementSearchSpec = WindowsElementSearchSpec.Create("window", "");
-            var windowsGrandChildElementSearchSpec = new WindowsElementSearchSpec { Name = "File name:", LocalizedControlType = "edit" };
-            var element = FindFileDialog(windowsElementSearchSpec, windowsGrandChildElementSearchSpec, log);
+            var windowsElementSearchSpec = WindowsElementSearchSpec.Create("", "Desktop 1");
+            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("#32770", "Open");
+            windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
+            var windowsGrandChildElementSearchSpec = WindowsElementSearchSpec.Create(UiClassNames.Edit, "File name:");
+            windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
+
+            var element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec, log);
             if (element == null) {
                 return false;
             }
 
-            element = element.FindElementsByWindowsElementSearchSpec(windowsGrandChildElementSearchSpec).FirstOrDefault();
+            element = WindowsElementSearcher.SearchWindowsElement(element, windowsGrandChildElementSearchSpec, log);
             if (element == null) {
                 return false;
             }
@@ -31,14 +33,6 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
             element.SendKeys(Keys.Enter);
             return true;
-        }
-
-        private AppiumWebElement FindFileDialog(WindowsElementSearchSpec windowsElementSearchSpec, WindowsElementSearchSpec windowsGrandChildElementSearchSpec,
-                List<string> log) {
-            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("dialog", "");
-            windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
-            windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
-            return WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec, log);
         }
     }
 }

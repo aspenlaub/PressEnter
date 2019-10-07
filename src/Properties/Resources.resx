@@ -147,4 +147,7 @@
   <data name="NumberOfRefrehsIsNow" xml:space="preserve">
     <value>Number of refresh actions is now {0}</value>
   </data>
+  <data name="Refreshing" xml:space="preserve">
+    <value>Refreshing...</value>
+  </data>
 </root>
