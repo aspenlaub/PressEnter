@@ -8,7 +8,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
         public bool EnterFileNameAndPressEnter(string fileName, List<string> log) {
             var windowsElementSearchSpec = WindowsElementSearchSpec.Create("", "Desktop 1");
-            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("#32770", "Open");
+            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("", "Open");
+            windowsChildElementSearchSpec.ClassNames.AddRange(new [] { "#32769", "#32770" });
             windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
             var windowsGrandChildElementSearchSpec = WindowsElementSearchSpec.Create(UiClassNames.Edit, "File name:");
             windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
