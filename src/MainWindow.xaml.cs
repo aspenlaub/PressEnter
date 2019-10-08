@@ -16,6 +16,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
         protected string FileName;
         protected string ResponseFileName;
         protected string Response;
+        protected string WindowName;
         protected string[] Arguments;
         protected PressEnterAgent Agent;
 
@@ -38,6 +39,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             if (Arguments.Length <= 3) { return; }
 
             ResponseFileName = Arguments[3];
+
+            if (Arguments.Length <= 4) { return; }
+
+            WindowName = Arguments[4];
         }
 
         private async Task<bool> RefreshOnce() {
@@ -54,7 +59,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             }
 
             var log = new List<string>();
-            var okay = await Task.Run(() => Agent.EnterFileNameAndPressEnter(FileName, log));
+            var okay = await Task.Run(() => Agent.EnterFileNameAndPressEnter(FileName, WindowName, log));
             SetOverallResultText(okay ? Properties.Resources.FileNameEntered : Properties.Resources.NoUploadWindowFound);
             if (!okay) {
                 log.Where(s => !string.IsNullOrWhiteSpace(s)).ToList().ForEach(s => Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " " + s);

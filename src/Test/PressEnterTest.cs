@@ -37,7 +37,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
             var fileName = new Folder(Path.GetTempPath()).FullName + @"\PressEnter.txt";
             const string testText = "It worked!";
             File.WriteAllText(fileName, testText);
-            Assert.IsTrue(sut.EnterFileNameAndPressEnter(fileName, log));
+            Assert.IsTrue(sut.EnterFileNameAndPressEnter(fileName, "", log));
             Assert.IsTrue(element.Text.Contains(testText));
         }
     }

@@ -6,14 +6,17 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
     public class PressEnterAgent {
         protected WindowsElementSearcher WindowsElementSearcher = new WindowsElementSearcher();
 
-        public bool EnterFileNameAndPressEnter(string fileName, List<string> log) {
-            var windowsElementSearchSpec = WindowsElementSearchSpec.Create("", "Desktop 1");
-            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("#32770", "Open");
-            windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
+        public bool EnterFileNameAndPressEnter(string fileName, string windowName, List<string> log) {
+            var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("#32770", string.IsNullOrWhiteSpace(windowName) ? "Open" : "");
             var windowsGrandChildElementSearchSpec = WindowsElementSearchSpec.Create(UiClassNames.Edit, "File name:");
             windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
+            var windowsElementSearchSpec = string.IsNullOrWhiteSpace(windowName)
+                ? WindowsElementSearchSpec.Create("", "Desktop 1")
+                : WindowsElementSearchSpec.Create(UiClassNames.Window, windowName);
+            windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
 
             var element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec, log);
+
             if (element == null) {
                 return false;
             }
