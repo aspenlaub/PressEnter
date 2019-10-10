@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Autofac;
 
 namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
     /// <summary>
@@ -18,7 +19,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
         protected string Response;
         protected string WindowName;
         protected string[] Arguments;
-        protected PressEnterAgent Agent;
+        protected IPressEnterAgent Agent;
 
         public MainWindow() {
             InitializeComponent();
@@ -34,7 +35,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
 
             FileName = Arguments[2];
 
-            Agent = new PressEnterAgent();
+            var builder = new ContainerBuilder().UsePressEnterAndPaleface();
+            var container = builder.Build();
+            Agent = container.Resolve<IPressEnterAgent>();
 
             if (Arguments.Length <= 3) { return; }
 

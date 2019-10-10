@@ -1,10 +1,17 @@
 ﻿using System.Collections.Generic;
-using Aspenlaub.Net.GitHub.CSharp.Paleface;
+using Aspenlaub.Net.GitHub.CSharp.Paleface.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Paleface.Interfaces;
 using OpenQA.Selenium;
 
 namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
-    public class PressEnterAgent {
-        protected WindowsElementSearcher WindowsElementSearcher = new WindowsElementSearcher();
+    public class PressEnterAgent : IPressEnterAgent {
+        protected readonly ITextBoxFactory TextBoxFactory;
+        protected readonly IWindowsElementSearcher WindowsElementSearcher;
+
+        public PressEnterAgent(ITextBoxFactory textBoxFactory, IWindowsElementSearcher windowsElementSearcher) {
+            TextBoxFactory = textBoxFactory;
+            WindowsElementSearcher = windowsElementSearcher;
+        }
 
         public bool EnterFileNameAndPressEnter(string fileName, string windowName, List<string> log) {
             var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("#32770", string.IsNullOrWhiteSpace(windowName) ? "Open" : "");
@@ -27,7 +34,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             }
 
             element.Click();
-            var textBox = new TextBox(element);
+            var textBox = TextBoxFactory.Create(element);
             textBox.Clear();
             textBox.Text = fileName;
             if (textBox.Text != fileName) {

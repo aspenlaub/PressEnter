@@ -1,14 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Aspenlaub.Net.GitHub.CSharp.Paleface;
+using Aspenlaub.Net.GitHub.CSharp.Paleface.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Paleface.Helpers;
+using Aspenlaub.Net.GitHub.CSharp.Paleface.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
+using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
     [TestClass]
     public class PressEnterTest {
-        protected WindowsElementSearcher WindowsElementSearcher = new WindowsElementSearcher();
+        private readonly IContainer vContainer;
+
+        public PressEnterTest() {
+            vContainer = new ContainerBuilder().UsePressEnterAndPaleface().Build();
+        }
 
         [TestInitialize]
         public void Initialize() {
@@ -26,14 +33,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
             var windowsElementSearchSpec = WindowsElementSearchSpec.Create("", "Document - WordPad");
             var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("", "Rich Text Window");
             windowsElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsChildElementSearchSpec);
-            var element = WindowsElementSearcher.SearchWindowsElement(windowsElementSearchSpec);
+            var searcher = vContainer.Resolve<IWindowsElementSearcher>();
+            var element = searcher.SearchWindowsElement(windowsElementSearchSpec);
             Assert.IsNotNull(element, "Wordpad not found");
             var log = new List<string>();
-            element = WindowsElementSearcher.SearchWindowsElement(element, windowsChildElementSearchSpec, log);
+            element = searcher.SearchWindowsElement(element, windowsChildElementSearchSpec, log);
             Assert.IsNotNull(element, "Wordpad document not found");
             element.Click();
             element.SendKeys(Keys.Control + 'o' + Keys.Control);
-            var sut = new PressEnterAgent();
+            var sut = vContainer.Resolve<IPressEnterAgent>();
             var fileName = new Folder(Path.GetTempPath()).FullName + @"\PressEnter.txt";
             const string testText = "It worked!";
             File.WriteAllText(fileName, testText);
