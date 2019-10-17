@@ -62,7 +62,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             }
 
             var log = new List<string>();
-            var okay = await Task.Run(() => Agent.EnterFileNameAndPressEnter(FileName, WindowName, log));
+            var okay = await Task.Run(() => {
+                try {
+                    return Agent.EnterFileNameAndPressEnter(FileName, WindowName, log);
+                } catch (Exception e) {
+                    log.Add(e.Message);
+                    return false;
+                }
+            });
             SetOverallResultText(okay ? Properties.Resources.FileNameEntered : Properties.Resources.NoUploadWindowFound);
             if (!okay) {
                 log.Where(s => !string.IsNullOrWhiteSpace(s)).ToList().ForEach(s => Results.Text += "\r\n" + DateTime.Now.ToLongTimeString() + " " + s);

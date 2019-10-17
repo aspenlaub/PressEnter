@@ -28,12 +28,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
                 return false;
             }
 
+            element.SendKeys("");
             element = WindowsElementSearcher.SearchWindowsElement(element, windowsGrandChildElementSearchSpec, log);
             if (element == null) {
                 return false;
             }
 
-            element.Click();
+            element.SendKeys("");
             var textBox = TextBoxFactory.Create(element);
             textBox.Clear();
             textBox.Text = fileName;
