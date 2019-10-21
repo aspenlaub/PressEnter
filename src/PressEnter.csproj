@@ -44,6 +44,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Paleface" Version="1.0.7222.34295" />
+    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Paleface" Version="1.0.7233.36714" />
   </ItemGroup>
 </Project>
