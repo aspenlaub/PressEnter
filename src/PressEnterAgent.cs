@@ -1,19 +1,25 @@
 ﻿using System.Collections.Generic;
 using Aspenlaub.Net.GitHub.CSharp.Paleface.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Paleface.Helpers;
 using Aspenlaub.Net.GitHub.CSharp.Paleface.Interfaces;
 using OpenQA.Selenium;
 
 namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
     public class PressEnterAgent : IPressEnterAgent {
-        protected readonly ITextBoxFactory TextBoxFactory;
+        protected readonly ITextBoxServices TextBoxServices;
         protected readonly IWindowsElementSearcher WindowsElementSearcher;
 
-        public PressEnterAgent(ITextBoxFactory textBoxFactory, IWindowsElementSearcher windowsElementSearcher) {
-            TextBoxFactory = textBoxFactory;
+        public PressEnterAgent(ITextBoxServices textBoxServices, IWindowsElementSearcher windowsElementSearcher) {
+            TextBoxServices = textBoxServices;
             WindowsElementSearcher = windowsElementSearcher;
         }
 
         public bool EnterFileNameAndPressEnter(string fileName, string windowName, List<string> log) {
+            if (!TestProcessHelper.IsProcessRunning(TestProcessHelper.ProcessType.Paleface)) {
+                log.Add("Paleface clipboard helper window has not been started");
+                return false;
+            }
+
             var windowsChildElementSearchSpec = WindowsElementSearchSpec.Create("#32770", string.IsNullOrWhiteSpace(windowName) ? "Open" : "");
             var windowsGrandChildElementSearchSpec = WindowsElementSearchSpec.Create(UiClassNames.Edit, "File name:");
             windowsChildElementSearchSpec.WindowsChildElementSearchSpecs.Add(windowsGrandChildElementSearchSpec);
@@ -35,7 +41,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter {
             }
 
             element.SendKeys("");
-            var textBox = TextBoxFactory.Create(element);
+            var textBox = TextBoxServices.Create(element);
             textBox.Clear();
             textBox.Text = fileName;
             if (textBox.Text != fileName) {

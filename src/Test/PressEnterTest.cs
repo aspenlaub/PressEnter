@@ -21,11 +21,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
         public void Initialize() {
             TestProcessHelper.ShutDownRunningProcesses(TestProcessHelper.ProcessType.WordPad);
             TestProcessHelper.LaunchProcess(TestProcessHelper.ProcessType.WordPad);
+            TestProcessHelper.ShutDownRunningProcesses(TestProcessHelper.ProcessType.Paleface);
+            TestProcessHelper.LaunchProcess(TestProcessHelper.ProcessType.Paleface);
         }
 
         [TestCleanup]
         public void Cleanup() {
             TestProcessHelper.ShutDownRunningProcesses(TestProcessHelper.ProcessType.WordPad);
+            TestProcessHelper.ShutDownRunningProcesses(TestProcessHelper.ProcessType.Paleface);
         }
 
         [TestMethod]
