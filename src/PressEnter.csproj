@@ -57,6 +57,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Paleface" Version="2.0.399.1192" />
+    <PackageReference Include="Paleface" Version="2.0.424.551" />
   </ItemGroup>
 </Project>
