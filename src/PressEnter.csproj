@@ -31,9 +31,13 @@
     <Page Remove="Test\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="packageicon.png" />
     <None Remove="pressenter.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packageicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="pressenter.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -50,11 +54,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="packageicon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Paleface" Version="2.0.610.1296" />
