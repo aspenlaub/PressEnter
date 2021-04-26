@@ -20,9 +20,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.PressEnter.Test {
         [TestInitialize]
         public void Initialize() {
             TestProcessHelper.ShutDownRunningProcesses(TestProcessHelper.ProcessType.WordPad);
-            TestProcessHelper.LaunchProcess(TestProcessHelper.ProcessType.WordPad);
+            TestProcessHelper.LaunchProcessAsync(TestProcessHelper.ProcessType.WordPad).Wait();
             TestProcessHelper.ShutDownRunningProcesses(TestProcessHelper.ProcessType.Paleface);
-            TestProcessHelper.LaunchProcess(TestProcessHelper.ProcessType.Paleface);
+            TestProcessHelper.LaunchProcessAsync(TestProcessHelper.ProcessType.Paleface).Wait();
         }
 
         [TestCleanup]
