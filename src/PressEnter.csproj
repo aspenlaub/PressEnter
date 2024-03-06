@@ -56,6 +56,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Paleface" Version="2.0.1667.1183" />
+    <PackageReference Include="Paleface" Version="2.0.1687.450" />
   </ItemGroup>
 </Project>
