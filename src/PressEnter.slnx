@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="PressEnter.csproj" />
+  <Project Path="Test/PressEnter.Test.csproj" />
+</Solution>
